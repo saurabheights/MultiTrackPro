@@ -6,7 +6,6 @@ from queue import Queue
 from threading import Thread, Lock
 
 import cv2
-from linetimer import linetimer
 
 
 class CachedVideoReader:

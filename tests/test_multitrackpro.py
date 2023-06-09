@@ -5,8 +5,6 @@
 
 import unittest
 
-from multitrackpro import multitrackpro
-
 
 class TestMultitrackpro(unittest.TestCase):
     """Tests for `multitrackpro` package."""
