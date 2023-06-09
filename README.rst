@@ -26,7 +26,7 @@ Features
 * QT based media player that can play four videos at the same time.
 
 Pending Tasks
---------
+-------------
 
 * Integrate github action/circleci
 
