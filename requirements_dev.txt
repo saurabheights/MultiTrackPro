@@ -7,3 +7,4 @@ tox==4.6.0
 coverage==7.2.7
 Sphinx==7.0.1
 twine==4.0.2
+pyqt6==6.5.1
