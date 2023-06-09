@@ -11,6 +11,9 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    "linetimer>=0.1.5",
+    "numpy>=1.24.3",
+    "opencv-python>= 4.7.0",
     "pyqt6>=6.5.1",
 ]
 
@@ -39,6 +42,9 @@ setup(
         'Topic :: Scientific/Engineering :: Image Processing',
     ],
     description="A multi-camera multi-object tracking library with its own labelling tool to annotate datasets.",
+    entry_points = {
+        'console_scripts': ['auto-annotate-pro=auto_annotate_pro:main'],
+    },
     install_requires=requirements,
     license="GNU General Public License v3",
     long_description=readme + '\n\n' + history,
@@ -52,6 +58,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/saurabheights/multitrackpro',
-    version='0.1.0',
+    version='0.1.1',
     zip_safe=False,
 )

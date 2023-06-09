@@ -29,7 +29,8 @@ class Ui_MainWindow(object):
         self.video_label.setScaledContents(True)
         self.video_label.setObjectName("video_label")
         self.horizontalLayout_2.addWidget(self.video_label)
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Minimum,
+                                           QtWidgets.QSizePolicy.Policy.Expanding)
         self.horizontalLayout_2.addItem(spacerItem)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.line = QtWidgets.QFrame(parent=self.centralwidget)
@@ -84,7 +85,8 @@ class Ui_MainWindow(object):
         self.pushButton_5 = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_5.setObjectName("pushButton_5")
         self.verticalLayout_3.addWidget(self.pushButton_5)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum,
+                                            QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_3.addItem(spacerItem1)
         self.horizontalLayout.addWidget(self.widget)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -120,6 +122,7 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

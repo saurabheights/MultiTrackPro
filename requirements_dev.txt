@@ -8,3 +8,6 @@ coverage==7.2.7
 Sphinx==7.0.1
 twine==4.0.2
 pyqt6==6.5.1
+numpy>=1.24.3
+opencv-python>= 4.7.0
+linetimer>=0.1.5
