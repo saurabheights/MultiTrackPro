@@ -17,7 +17,7 @@ A multi-camera multi-object tracking library with its own labelling tool to anno
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://multitrackpro.readthedocs.io.
+* Documentation: https://readthedocs.org/projects/multitrackpro/.
 
 
 Features
