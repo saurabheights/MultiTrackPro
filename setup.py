@@ -43,6 +43,7 @@ setup(
     name='multitrackpro',
     packages=find_packages(include=['multitrackpro', 'multitrackpro.*']),
     python_requires='>=3.6',
+    scripts=['multitracker/auto_annotate_pro.py'],
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/saurabheights/multitrackpro',
