@@ -1,5 +1,5 @@
 Welcome to MultiTrackPro's documentation!
-======================================
+=========================================
 
 .. toctree::
    :maxdepth: 2
