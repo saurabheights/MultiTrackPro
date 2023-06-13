@@ -22,7 +22,7 @@ class DatasetManager:
         row_2 = np.hstack(frames[2:])
         return np.vstack([row_1, row_2])
 
-    def get_data(self, frame_num: int) -> Optional[List[np.ndarray]]:
+    def get_data(self, frame_num: int) -> Optional[np.ndarray]:
         """
         Returns QImage for display with render-able objects (annotations) that can be manipulated via GUI.
         """
@@ -48,3 +48,6 @@ class DatasetManager:
 
     def get_video_length_in_frames(self) -> int:
         return self.videos_sync_reader.MIN_FRAME_COUNT
+
+    def add_annotations(self):
+        return None

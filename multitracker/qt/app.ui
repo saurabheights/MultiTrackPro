@@ -11,7 +11,7 @@
             </rect>
         </property>
         <property name="windowTitle">
-            <string>MainWindow</string>
+            <string>Auto Annotate Pro</string>
         </property>
         <widget class="QWidget" name="centralwidget">
             <layout class="QHBoxLayout" name="horizontalLayout">
@@ -82,21 +82,30 @@
                                         <number>0</number>
                                     </property>
                                     <item>
-                                        <widget class="QPushButton" name="videoPrevButton">
+                                        <widget class="QPushButton" name="video_prev_button">
+                                            <property name="enabled">
+                                                <bool>false</bool>
+                                            </property>
                                             <property name="text">
                                                 <string>PrevFrame</string>
                                             </property>
                                         </widget>
                                     </item>
                                     <item>
-                                        <widget class="QPushButton" name="videoPlayPauseButton">
+                                        <widget class="QPushButton" name="video_play_pause_button">
+                                            <property name="enabled">
+                                                <bool>false</bool>
+                                            </property>
                                             <property name="text">
                                                 <string>Play/Pause</string>
                                             </property>
                                         </widget>
                                     </item>
                                     <item>
-                                        <widget class="QPushButton" name="videoNextButton">
+                                        <widget class="QPushButton" name="video_next_button">
+                                            <property name="enabled">
+                                                <bool>false</bool>
+                                            </property>
                                             <property name="text">
                                                 <string>NextFrame</string>
                                             </property>
@@ -162,14 +171,20 @@
                                 <number>0</number>
                             </property>
                             <item>
-                                <widget class="QPushButton" name="pushButton_4">
+                                <widget class="QPushButton" name="run_tracking_model_button">
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
                                     <property name="text">
                                         <string>Run tracking model</string>
                                     </property>
                                 </widget>
                             </item>
                             <item>
-                                <widget class="QPushButton" name="pushButton_5">
+                                <widget class="QPushButton" name="merge_tracks_button">
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
                                     <property name="text">
                                         <string>Connect Across Camera Tracks</string>
                                     </property>

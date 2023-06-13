@@ -1,14 +1,16 @@
+import logging
 import sys
 from datetime import datetime
 from typing import Optional, List
 
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QImage, QPixmap
-from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QProgressDialog
 from linetimer import linetimer, CodeTimer
 
 from multitracker.config import PROFILE_CODE
 from multitracker.core.dataset_manager import DatasetManager
+from multitracker.core.tracker.Tracker import Tracker
 from multitracker.qt.my_main_window import Ui_MainWindow
 
 
@@ -16,23 +18,29 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        # Load static UI file
-        # uic.loadUi('resource/qt-ui/app.ui', self)
         self.dataset_manager: Optional[DatasetManager] = None
         self.reinitialize()
         self.open_video_action.triggered.connect(self.open_video_folder)
 
     def connect_slot_and_signals(self):
-        """ Enable media buttons once media is loaded. """
-        self.videoPlayPauseButton.pressed.connect(self.toggle_play_video)
-        self.videoPrevButton.pressed.connect(lambda: self.move_video_pos(frame_delta=-1))
-        self.videoNextButton.pressed.connect(lambda: self.move_video_pos(frame_delta=1))
+        if self.dataset_manager is None:
+            logging.warning("No dataset manager but various buttons are being enabled.")
 
-    def disconnect_slot_and_signals(self):
-        """ Disable media buttons once media is loaded. """
-        self.videoPlayPauseButton.disconnect()
-        self.videoPrevButton.disconnect()
-        self.videoNextButton.disconnect()
+        """ Enable media buttons once media is loaded. """
+        self.video_play_pause_button.pressed.connect(self.toggle_play_video)
+        self.video_prev_button.pressed.connect(lambda: self.move_video_pos(frame_delta=-1))
+        self.video_next_button.pressed.connect(lambda: self.move_video_pos(frame_delta=1))
+
+        """ Enable tracking option """
+        self.run_tracking_model_button.pressed.connect(self.run_tracking)
+        self.merge_tracks_button.pressed.connect(self.merge_tracks)
+
+        """ Enable buttons """
+        for button in [
+            self.video_play_pause_button, self.video_prev_button, self.video_next_button,
+            self.run_tracking_model_button, self.merge_tracks_button
+        ]:
+            button.setEnabled(True)
 
     def reinitialize(self, video_files_path: Optional[List[str]] = None):
         self.video_files_path = video_files_path
@@ -57,7 +65,7 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
         video_files_path, _ = QFileDialog.getOpenFileNames(self, 'Select Videos', "", "Video Files (*.avi *.mp4 *.mpg)")
         if video_files_path:
             self.reinitialize(video_files_path)
-            self.update_frame(frame_num=0)  # Set the first frame
+            self.update_frame(frame_num=0)  # Set the first frame to show video files are loaded.
 
     def toggle_play_video(self):
         self.is_video_paused = not self.is_video_paused
@@ -97,6 +105,42 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
                                    Qt.AspectRatioMode.KeepAspectRatio,
                                    transformMode=Qt.TransformationMode.SmoothTransformation)
             )
+
+    def run_tracking(self):
+        # Pause the video, since we will block user inputs.
+        if not self.is_video_paused:
+            self.toggle_play_video()
+        # Confirm before running
+        ret = QMessageBox.question(
+            self,
+            "Run tracking model",
+            "Are you sure you want to run tracking model? This can take long time.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes,
+        )
+        if ret != QMessageBox.StandardButton.Yes:
+            return
+
+        # Run tracker on videos.
+        update_progress_dialog_box = QProgressDialog(
+            "Running tracker", "Stop tracking", 0, self.dataset_manager.get_video_length_in_frames(), self
+        )
+        update_progress_dialog_box.setWindowModality(Qt.WindowModality.WindowModal)
+        update_progress_dialog_box.show()
+        tracker = Tracker()
+        tmp_dataset_manager = DatasetManager(video_files=self.video_files_path)
+        for frame_num in range(self.dataset_manager.get_video_length_in_frames()):
+            frames = tmp_dataset_manager.get_data(frame_num=frame_num)
+            assert frames is not None, "Got None frames when fetching from tmp_dataset_manager"
+            tracker.track(frames)
+            update_progress_dialog_box.setValue(frame_num)
+            if update_progress_dialog_box.wasCanceled():
+                break
+        update_progress_dialog_box.setValue(self.dataset_manager.get_video_length_in_frames())
+        self.dataset_manager.add_annotations(tracker.get_annotations())
+
+    def merge_tracks(self):
+        pass
 
 
 def main():
