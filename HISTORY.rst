@@ -11,3 +11,8 @@ History
 ------------------
 
 * Added video player that plays exactly 4 videos.
+
+0.1.2 (2023-06-15)
+------------------
+
+* BugFixes
