@@ -85,7 +85,6 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
 
     @linetimer('Update Frame', silent=PROFILE_CODE)
     def update_frame(self, frame_num: int):
-        print(str(datetime.now()))
         self.current_frame_num = frame_num
         with CodeTimer('Get Data', unit='ms', silent=PROFILE_CODE):
             frame = self.dataset_manager.get_data(frame_num=frame_num)

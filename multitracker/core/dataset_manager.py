@@ -49,5 +49,6 @@ class DatasetManager:
     def get_video_length_in_frames(self) -> int:
         return self.videos_sync_reader.MIN_FRAME_COUNT
 
-    def add_annotations(self):
+    def add_annotations(self, annotations):
         return None
+

@@ -52,7 +52,7 @@ setup(
     include_package_data=True,
     keywords='multitrackpro, annotation, labelling, machine-learning, deep-learning, vision, ML, DL, AI, YOLO',
     name='multitrackpro',
-    packages=find_packages(include=['multitrackpro', 'multitrackpro.*']),
+    packages=find_packages(include=['multitracker', 'multitracker.*']),
     python_requires='>=3.6',
     scripts=['multitracker/auto_annotate_pro.py'],
     test_suite='tests',
