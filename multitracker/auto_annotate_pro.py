@@ -42,8 +42,8 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
         ]:
             button.setEnabled(True)
 
-    def reinitialize(self, video_files_path: Optional[List[str]] = None):
-        self.video_files_path = video_files_path
+    def reinitialize(self, video_files: Optional[List[str]] = None):
+        self.video_files = video_files
         self.pixmap = None
         self.current_frame_num = 0  # Move to dataset manager
         self.is_video_paused = True
@@ -53,18 +53,18 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
 
         if self.dataset_manager is not None:
             pass  # Ask to save.
-        if video_files_path is None:
+        if video_files is None:
             self.dataset_manager = None
             return
 
-        self.video_files_path = list(filter(lambda video_file: "internal" not in video_file, self.video_files_path))
-        self.dataset_manager = DatasetManager(self.video_files_path)
+        self.video_files = list(filter(lambda video_file: "internal" not in video_file, self.video_files))
+        self.dataset_manager = DatasetManager(self.video_files)
         self.connect_slot_and_signals()
 
     def open_video_folder(self):
-        video_files_path, _ = QFileDialog.getOpenFileNames(self, 'Select Videos', "", "Video Files (*.avi *.mp4 *.mpg)")
-        if video_files_path:
-            self.reinitialize(video_files_path)
+        video_files, _ = QFileDialog.getOpenFileNames(self, 'Select Videos', "", "Video Files (*.avi *.mp4 *.mpg)")
+        if video_files:
+            self.reinitialize(video_files)
             self.update_frame(frame_num=0)  # Set the first frame to show video files are loaded.
 
     def toggle_play_video(self):
@@ -127,10 +127,12 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
         update_progress_dialog_box.setWindowModality(Qt.WindowModality.WindowModal)
         update_progress_dialog_box.show()
         tracker = Tracker()
-        tmp_dataset_manager = DatasetManager(video_files=self.video_files_path)
+        tmp_dataset_manager = DatasetManager(video_files=self.video_files)
         for frame_num in range(self.dataset_manager.get_video_length_in_frames()):
             frames = tmp_dataset_manager.get_data(frame_num=frame_num)
-            assert frames is not None, "Got None frames when fetching from tmp_dataset_manager"
+            if frames is None:
+                logging.error(f"Got None frames when fetching from tmp_dataset_manager, frame number: {frame_num}")
+                continue
             tracker.track(frames)
             update_progress_dialog_box.setValue(frame_num)
             if update_progress_dialog_box.wasCanceled():

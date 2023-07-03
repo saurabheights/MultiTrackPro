@@ -7,9 +7,9 @@ from multitracker.core.io.cached_video_reader import CachedVideoReader
 
 
 class MultiVideoManager:
-    def __init__(self, paths: List[str], threaded_capture=True, queue_size=128):
+    def __init__(self, video_files: List[str], threaded_capture=True, queue_size=128):
         self.file_video_streamers: List[CachedVideoReader] = list(map(
-            lambda x: CachedVideoReader(x, threaded_capture=threaded_capture, queue_size=queue_size), paths
+            lambda x: CachedVideoReader(x, threaded_capture=threaded_capture, queue_size=queue_size), video_files
         ))
         self.MIN_FRAME_COUNT = min(list(map(lambda x: x.size, self.file_video_streamers)))
         print(self.MIN_FRAME_COUNT)

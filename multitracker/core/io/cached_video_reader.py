@@ -9,8 +9,8 @@ import cv2
 
 
 class CachedVideoReader:
-    def __init__(self, path, threaded_capture=True, queue_size=128):
-        self.stream = cv2.VideoCapture(str(path))
+    def __init__(self, video_file, threaded_capture=True, queue_size=128):
+        self.stream = cv2.VideoCapture(str(video_file))
         self.size = int(self.stream.get(cv2.CAP_PROP_FRAME_COUNT))
         self.stopped = False
         self.is_rewinds = False
