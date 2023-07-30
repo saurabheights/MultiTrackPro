@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-
-"""The setup script."""
-
 from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
@@ -11,15 +8,20 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    "ultralytics>=8.0.125",  # For object detection
     "linetimer>=0.1.5",
-    "numpy>=1.24.3",
-    "opencv-python>= 4.7.0",
+    "opencv-python>=4.7.0",
     "pyqt6>=6.5.1",
 ]
 
 test_requirements = [ ]
 
 setup(
+    # Often evolving fields first
+    name='multitrackpro',
+    version='0.1.2',
+    description="A multi-camera multi-object tracking software with its own labelling tool to annotate datasets.",
+    # Almost static fields below
     author="Saurabh Khanduja",
     author_email='pixelperceive@gmail.com',
     classifiers=[
@@ -41,7 +43,6 @@ setup(
         'Topic :: Scientific/Engineering :: Image Recognition',
         'Topic :: Scientific/Engineering :: Image Processing',
     ],
-    description="A multi-camera multi-object tracking library with its own labelling tool to annotate datasets.",
     entry_points = {
         'console_scripts': ['auto-annotate-pro=auto_annotate_pro:main'],
     },
@@ -51,13 +52,11 @@ setup(
     long_description_content_type='text/x-rst',
     include_package_data=True,
     keywords='multitrackpro, annotation, labelling, machine-learning, deep-learning, vision, ML, DL, AI, YOLO',
-    name='multitrackpro',
     packages=find_packages(include=['multitracker', 'multitracker.*']),
     python_requires='>=3.6',
     scripts=['multitracker/auto_annotate_pro.py'],
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/saurabheights/multitrackpro',
-    version='0.1.2',
     zip_safe=False,
 )

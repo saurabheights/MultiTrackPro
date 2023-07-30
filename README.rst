@@ -13,7 +13,7 @@ MultiTrackPro
 
 
 
-A multi-camera multi-object tracking library with its own labelling tool to annotate datasets.
+A multi-camera multi-object tracking software with its own labelling tool to annotate datasets.
 
 
 * Free software: GNU General Public License v3
@@ -32,21 +32,31 @@ Features
 Pending Tasks
 -------------
 
-* Integrate object detection and tracker.
-    * Store annotations of each frame in mem.
-    * Add display of bounding boxes as drawables.
+* Implement play of N number of video files (N != 4, but N <=4). Limit to 4 videos maximum.
+* Set play pause next frame, prev frame etc buttons to disabled stage when no video.
+* Add play pause icons to UI using `Google Material`_.
+
+* Integrate object detection.
+    * ☑ - Store annotations of each frame in memory.
+    * ☑ - Add display of bounding boxes.
+    * Replace BoundingBox as drawables.
+    * Add tracker.
     * Save/Load Annotations.
     * Save dataset-specific configuration.
+* Add masking to the frames to discard object detection for certain areas.
 * Add object detection correction
 * Add tracking correction
 * Add mouse event capture to rearrange videos.
 * Add track integration between two frames.
-* Add play pause icons to UI.
-* Set play pause next fram, prev frame etc buttons to disabled stage when no video.
+
 * Add speed change option for playback.
 * Make frame number text label and slider work.
 * Integrate github action/circleci
-* Implement play of N number of video files (N != 4).
+* ToDo - See Live Preview of object detection and tracking. This will help user catch errors quickly, instead of running object detection completely.
+* Use platformdirs_
+
+.. _Google Material: https://fonts.google.com/icons?icon.category=Audio%26Video
+.. _platformdirs: https://github.com/platformdirs/platformdirs
 
 Credits
 -------

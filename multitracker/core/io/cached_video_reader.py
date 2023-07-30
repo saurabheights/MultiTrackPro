@@ -47,15 +47,15 @@ class CachedVideoReader:
         else:
             return self.stream.read()
 
+    def is_opened(self):
+        return self.stream.isOpened()
+
     def release(self):
         if self.threaded_capture:
             self.stopped = True
             self.thread.join()
         else:
             self.stream.release()
-
-    def isOpened(self):
-        return self.stream.isOpened()
 
     def set_frame(self, frame_num: int):
         logging.debug(f"Changing frame number to {frame_num}")

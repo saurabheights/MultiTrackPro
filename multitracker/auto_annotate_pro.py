@@ -1,16 +1,16 @@
 import logging
 import sys
-from datetime import datetime
-from typing import Optional, List
-
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QProgressDialog
 from linetimer import linetimer, CodeTimer
+from typing import Optional, List
 
 from multitracker.config import PROFILE_CODE
 from multitracker.core.dataset_manager import DatasetManager
-from multitracker.core.tracker.Tracker import Tracker
+from multitracker.core.io.multi_video_manager import MultiVideoManager
+
+from multitracker.core.tracker.multi_tracker import MultiVideoTracker
 from multitracker.qt.my_main_window import Ui_MainWindow
 
 
@@ -126,10 +126,14 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
         )
         update_progress_dialog_box.setWindowModality(Qt.WindowModality.WindowModal)
         update_progress_dialog_box.show()
-        tracker = Tracker()
-        tmp_dataset_manager = DatasetManager(video_files=self.video_files)
+        # ToDo - Move logic of loading video to tracker and pass progress_callback to tracker.
+        tracker = MultiVideoTracker(
+            video_files=self.video_files,
+            classes=[2, 5, 7]  # Only 2: 'car', 5: 'bus', 7: 'truck', Later allow customization.
+        )
+        tmp_dataset_manager = MultiVideoManager(video_files=self.video_files)
         for frame_num in range(self.dataset_manager.get_video_length_in_frames()):
-            frames = tmp_dataset_manager.get_data(frame_num=frame_num)
+            frames = tmp_dataset_manager.read()
             if frames is None:
                 logging.error(f"Got None frames when fetching from tmp_dataset_manager, frame number: {frame_num}")
                 continue
@@ -137,8 +141,9 @@ class VideoPlayer(QMainWindow, Ui_MainWindow):
             update_progress_dialog_box.setValue(frame_num)
             if update_progress_dialog_box.wasCanceled():
                 break
+        # Save all the values computed.
         update_progress_dialog_box.setValue(self.dataset_manager.get_video_length_in_frames())
-        self.dataset_manager.add_annotations(tracker.get_annotations())
+        self.dataset_manager.add_annotations(*tracker.get_annotations())
 
     def merge_tracks(self):
         pass

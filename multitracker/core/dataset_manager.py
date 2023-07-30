@@ -1,7 +1,8 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import numpy as np
+from ultralytics.yolo.utils.plotting import Annotator
 
 from multitracker.core.io.multi_video_manager import MultiVideoManager
 
@@ -13,6 +14,9 @@ class DatasetManager:
         self.videos_sync_reader = MultiVideoManager(video_files)
         self.current_frame_num = -1
         self.number_of_frames = self.videos_sync_reader.get_video_length_in_frames()
+
+        self.annotations = {}
+        self.label_to_name_map = None
 
     def tile_images(self, frames: List[np.ndarray]) -> np.ndarray:
         # ToDo Handle when number of images is not 4 or if image dimension are different.
@@ -40,6 +44,14 @@ class DatasetManager:
 
         self.current_frame_num = frame_num
 
+        if self.annotations:
+            for (frame, video_filename) in zip(all_video_frames, self.video_files):
+                if len(self.annotations[video_filename]) >= frame_num+1:
+                    annotator = Annotator(frame)
+                    frame_annotations = self.annotations[video_filename][frame_num]
+                    for frame_annotation in frame_annotations:
+                        annotator.box_label(frame_annotation[:4], self.label_to_name_map[int(frame_annotation[5])])
+
         if all_video_frames is None:
             logging.error("all_video_frames are None, video read failed.")
             return None
@@ -49,6 +61,6 @@ class DatasetManager:
     def get_video_length_in_frames(self) -> int:
         return self.videos_sync_reader.MIN_FRAME_COUNT
 
-    def add_annotations(self, annotations):
-        return None
-
+    def add_annotations(self, annotations, label_to_name_map: Dict[int, str]):
+        self.annotations = annotations
+        self.label_to_name_map = label_to_name_map
