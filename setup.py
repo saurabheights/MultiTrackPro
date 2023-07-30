@@ -19,7 +19,7 @@ test_requirements = [ ]
 setup(
     # Often evolving fields first
     name='multitrackpro',
-    version='0.1.2',
+    version='0.1.3',
     description="A multi-camera multi-object tracking software with its own labelling tool to annotate datasets.",
     # Almost static fields below
     author="Saurabh Khanduja",

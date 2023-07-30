@@ -16,3 +16,9 @@ History
 ------------------
 
 * BugFixes
+
+0.1.3 (2023-07-30)
+------------------
+
+* Integrated Object Detection for all videos.
+* Added rendering of object detection results.
